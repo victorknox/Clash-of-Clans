@@ -16,10 +16,14 @@ class Board:
         
         # Blank board with boundaries
         self.content = [[' ']*self.width for tile in range(self.height)]
-        self.content[0] = ['#']*self.width
-        self.content[self.height-1] = ['#']*self.width
-        for i in range(self.height): self.content[i][0] = '#'
-        for i in range(self.height): self.content[i][self.width-1] = '#'
+        self.content[0] = ['═']*self.width
+        self.content[self.height-1] = ['═']*self.width
+        for i in range(self.height): self.content[i][0] = '║'
+        for i in range(self.height): self.content[i][self.width-1] = '║'
+        self.content[0][0]='╔'
+        self.content[0][self.width-1]='╗'
+        self.content[self.height-1][0]='╚'
+        self.content[self.height-1][self.width-1]='╝'
 
         # Initialize spawning points
         self.content[2][2] = Fore.YELLOW + 'I' + Fore.RESET

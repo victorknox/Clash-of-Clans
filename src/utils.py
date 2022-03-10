@@ -19,14 +19,14 @@ class Game:
     def init_game(self):
         
         # Initialize buildings and Characters
-        self.buildings = [TownHall((40, 12)), Hut((20, 18)), Hut((40, 10)), Hut((20, 15)), Hut((60, 10)), Cannon((20, 10)), Cannon((60, 16))]
+        self.buildings = [TownHall((40, 12)), Hut((20, 18)), Hut((40, 10)), Hut((20, 15)), Hut((60, 10)), Hut((20, 10)), Hut((60, 16)), Cannon((20, 10)), Cannon((60, 16))]        
         # Initialize walls
-        for x in range(15, 70):
+        for x in range(15, 66):
             self.buildings.append(Wall((x, 8)))
             self.buildings.append(Wall((x, 20)))
         for y in range(8, 21):
             self.buildings.append(Wall((15, y)))
-            self.buildings.append(Wall((70, y)))
+            self.buildings.append(Wall((65, y)))
         self.characters = [self.king]
         self.board.update(self.buildings, self.characters)
 
@@ -41,7 +41,11 @@ class Game:
             if(ip == 's' or 'w' or 'a' or 'd'):
                 self.king.move(ip, self.board)
                 self.board.update(self.buildings, self.characters)
-
+            if(ip == ' '):
+                for building in self.buildings:
+                    if(building.x == self.king.x + 1 and building.y == self.king.y):
+                        self.king.attack_enemy(building)
+                        self.board.update(self.buildings, self.characters)
             else:
                 print(ip)
                 print("Invalid Move!")

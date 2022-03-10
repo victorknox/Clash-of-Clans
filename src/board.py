@@ -22,5 +22,12 @@ class Board:
         for row in self.content:
             print(''.join(row))
 
-    def update(self):
-        pass
+    def update(self, building):
+        for row in range(building.height):
+            self.content[building.y + row][building.x: building.x + building.length] = building.content[row]
+        # for row in range(building.height):
+        #     for col in range(building.length):
+        #         self.content[building.y + row][building.x + col] = building.content[row][col]
+        # for row in range(building.height):
+        #     for col in range(building.length):
+        #         self.content[building.y + row][building.x + col] = building.content[row][col]

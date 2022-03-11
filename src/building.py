@@ -13,6 +13,7 @@ class Building:
         self.icon = icon
         self.x = position[0]
         self.y = position[1]
+        self.iswall = False
         self.content = [[Fore.GREEN + icon + Fore.RESET]*self.length for tile in range(self.height)]
 
 
@@ -60,13 +61,27 @@ class Wall(Building):
         maxhealth = 50
         icon = '#'
         super().__init__(height, length, position, maxhealth, icon)
+        self.iswall = True
     
 class Cannon(Building):
     def __init__(self, position):
         height = 2
         length = 2
         maxhealth = 200
-        attack_range = 6
-        damage = 50
+        self.attack_range = 6
+        self.damage = 5
         icon = 'C'
         super().__init__(height, length, position, maxhealth, icon)
+
+    def attack_enemy(self, characters):
+        # scan the range, if enemy is in range, attack
+        x = self.x
+        y = self.y
+        
+        for character in characters:
+            if character.x <= x + self.attack_range and character.x >= x - self.attack_range and character.y <= y + self.attack_range and character.y >= y - self.attack_range:
+                character.attacked(self.damage)
+                return 
+                
+
+

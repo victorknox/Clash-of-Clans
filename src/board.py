@@ -33,15 +33,26 @@ class Board:
 
     def display(self):
         " displays the board "
-        for row in self.content:
+        for row in self.content[:-1]:
             print(''.join(row))
+        print(''.join(self.content[-1]), end = '')
 
     def update(self, buildings, characters):
         " updates the board, with updated building and character parameters as input"
         self.clear()
+        # updating each building
         for building in buildings:
             for row in range(building.height):
                 self.content[building.y + row][building.x: building.x + building.length] = building.content[row]
+        
+        # updating each character
         for character in characters:
             self.content[character.y][character.x: character.x + 1] = character.content[0]
         
+        # updating king's health bar
+        self.content[1][self.width-13]='K'
+        self.content[1][self.width-12]=':'
+        for i in range(math.floor(characters[0].health/100)):
+            self.content[1][self.width-11+i]= Fore.CYAN + '■' + Fore.RESET
+        
+        # canons attacking enemies

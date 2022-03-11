@@ -29,6 +29,7 @@ class Game:
             self.buildings.append(Wall((65, y)))
         self.characters = [self.king]
         self.board.update(self.buildings, self.characters)
+        
 
     def run_game(self):
         while(True):
@@ -39,13 +40,22 @@ class Game:
                 os.system('clear')
                 exit() 
             if(ip == 's' or 'w' or 'a' or 'd'):
+            # King moves
                 self.king.move(ip, self.board)
-                self.board.update(self.buildings, self.characters)
             if(ip == ' '):
+            # King attacks the building right to him
                 for building in self.buildings:
-                    if(building.x == self.king.x + 1 and building.y == self.king.y):
+                    if(self.king.x + 1 == building.x and self.king.y <= building.y + building.height - 1 and self.king.y >= building.y):
                         self.king.attack_enemy(building)
-                        self.board.update(self.buildings, self.characters)
+            if (ip == 'p' or 'i' or 'o'):
+                pass
             else:
-                print(ip)
-                print("Invalid Move!")
+                pass
+            # update the board in each iteration
+            self.board.update(self.buildings, self.characters)
+            # canon attack
+            for building in self.buildings:
+                if(isinstance(building, Cannon)):
+                    building.attack_enemy(self.characters)
+
+            

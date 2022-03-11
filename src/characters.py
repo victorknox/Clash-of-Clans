@@ -141,5 +141,4 @@ class Barbarian(Character):
             elif self.direction == "d":
                 if(self.y + 1 == building.y and self.x <= building.x + building.length - 1 and self.x >= building.x):
                     building.attacked(self.damage)
-        
-
+    

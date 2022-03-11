@@ -1,10 +1,12 @@
 import os 
-import colorama 
+import pickle
+from datetime import datetime
 from src.building import *
 from src.characters import *
 from src.input import *
 from src.board import *
 from src.spells import *
+import copy
 
 
 class Game:
@@ -15,6 +17,7 @@ class Game:
         self.buildings = []
         self.characters = []
         self.barb_limit = 20
+        self.boards = []
         self.input = input_to()
         self.init_game()
         self.run_game()
@@ -41,6 +44,7 @@ class Game:
                 win = False
         if(win):
             print("Defeat!")
+            self.save_game()
             exit()
         
     def check_loss(self):    
@@ -51,21 +55,30 @@ class Game:
                     loss = False
         if(loss):
             print("Victory!")
+            self.save_game()
             exit()
 
     def end_game(self):
         self.check_win()
         self.check_loss()
 
+    def save_game(self):
+        now = datetime.now()
+        dt_string = now.strftime("%d%m%Y%H%M")
+        file_name = './replays/' + dt_string + '.pkl'
+        with open(file_name, 'wb') as f:
+            pickle.dump(self.boards, f)
 
     def run_game(self):
         while(True):
             os.system('clear')
             self.board.display()
+            self.boards.append(copy.deepcopy(self.board))
             ip = input_to()
             self.end_game()
             if(ip == 'q'):
                 os.system('clear')
+                self.save_game()
                 exit() 
             if(ip == 's' or 'w' or 'a' or 'd'):
             # King moves

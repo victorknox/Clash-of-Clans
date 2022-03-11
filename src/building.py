@@ -77,11 +77,20 @@ class Cannon(Building):
         # scan the range, if enemy is in range, attack
         x = self.x
         y = self.y
-        
+        inrange = False
         for character in characters:
             if character.x <= x + self.attack_range and character.x >= x - self.attack_range and character.y <= y + self.attack_range and character.y >= y - self.attack_range:
                 character.attacked(self.damage)
-                return 
+                inrange = True
+                break
+        if not inrange:
+            # change canon color
+            self.attacked(0)
+        else:
+            # change canon color
+            self.update_color(Fore.WHITE)
+        return
+
                 
 
 

@@ -48,14 +48,20 @@ class Game:
                     if(self.king.x + 1 == building.x and self.king.y <= building.y + building.height - 1 and self.king.y >= building.y):
                         self.king.attack_enemy(building)
             if (ip == 'p' or 'i' or 'o'):
-                pass
-            else:
-                pass
+                # spawn a barbarian at the respective spawn point
+                # spawn points are (2, 2), (22, 70), (2, 70)
+                if(ip == 'i'):
+                    self.characters.append(Barbarian((2, 2)))
+                if(ip == 'o'):
+                    self.characters.append(Barbarian((70, 22)))
+                if(ip == 'p'):
+                    self.characters.append(Barbarian((70, 2)))
+            
+            # barbarians' automated movement
+            # for character in self.characters[1:]:
+            #     character.automove(self.board)
+            
             # update the board in each iteration
             self.board.update(self.buildings, self.characters)
-            # canon attack
-            for building in self.buildings:
-                if(isinstance(building, Cannon)):
-                    building.attack_enemy(self.characters)
 
             

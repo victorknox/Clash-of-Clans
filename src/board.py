@@ -27,8 +27,8 @@ class Board:
 
         # Initialize spawning points
         self.content[2][2] = Fore.YELLOW + 'I' + Fore.RESET
-        self.content[self.height-3][self.width -3] = Fore.YELLOW + 'O' + Fore.RESET
-        self.content[2][self.width -3] = Fore.YELLOW + 'P' + Fore.RESET
+        self.content[22][70] = Fore.YELLOW + 'O' + Fore.RESET
+        self.content[2][70] = Fore.YELLOW + 'P' + Fore.RESET
 
 
     def display(self):
@@ -56,3 +56,10 @@ class Board:
             self.content[1][self.width-11+i]= Fore.CYAN + '■' + Fore.RESET
         
         # canons attacking enemies
+        for building in buildings:
+            if(isinstance(building, Cannon)):
+                building.attack_enemy(characters)
+            
+        # barbarians' automated movement
+        for character in characters[1:]:
+            character.automove(self, buildings)

@@ -28,21 +28,6 @@ class Character:
             self.x += 1
         else:
             pass        
-    
-    def attack_enemy(self, buildings):
-        for building in buildings:
-            if self.direction == "r":
-                if(self.x + 1 == building.x and self.y <= building.y + building.height - 1 and self.y >= building.y):
-                    building.attacked(self.damage)
-            elif self.direction == "l":
-                if(self.x - 1 == building.x + building.length - 1 and self.y <= building.y + building.height - 1 and self.y >= building.y):
-                    building.attacked(self.damage)
-            elif self.direction == "u":
-                if(self.y - 1 == building.y + building.height - 1 and self.x <= building.x + building.length - 1 and self.x >= building.x):
-                    building.attacked(self.damage)
-            elif self.direction == "d":
-                if(self.y + 1 == building.y and self.x <= building.x + building.length - 1 and self.x >= building.x):
-                    building.attacked(self.damage)
 
 
     def attacked(self, damage):
@@ -91,6 +76,15 @@ class King(Character):
             self.unitmove(ip, board)
             ms -= 1
 
+    def attack_enemy(self, buildings):
+        attack_range = 3
+        for building in buildings:
+            for i in range(-attack_range, attack_range):
+                for j in range(-attack_range, attack_range):
+                    if(self.x + i <= building.x + building.length - 1 and self.x + i >= building.x):
+                        if(self.y + j <= building.y + building.height - 1 and self.y + j >= building.y):
+                            building.attacked(self.damage)
+
 
 class Barbarian(Character):
     def __init__(self, position):
@@ -133,5 +127,19 @@ class Barbarian(Character):
             self.unitmove(ip, board)
             ms -= 1
 
+    def attack_enemy(self, buildings):
+        for building in buildings:
+            if self.direction == "r":
+                if(self.x + 1 == building.x and self.y <= building.y + building.height - 1 and self.y >= building.y):
+                    building.attacked(self.damage)
+            elif self.direction == "l":
+                if(self.x - 1 == building.x + building.length - 1 and self.y <= building.y + building.height - 1 and self.y >= building.y):
+                    building.attacked(self.damage)
+            elif self.direction == "u":
+                if(self.y - 1 == building.y + building.height - 1 and self.x <= building.x + building.length - 1 and self.x >= building.x):
+                    building.attacked(self.damage)
+            elif self.direction == "d":
+                if(self.y + 1 == building.y and self.x <= building.x + building.length - 1 and self.x >= building.x):
+                    building.attacked(self.damage)
         
 

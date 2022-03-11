@@ -14,6 +14,7 @@ class Game:
         self.king = King()
         self.buildings = []
         self.characters = []
+        self.barb_limit = 20
         self.input = input_to()
         self.init_game()
         self.run_game()
@@ -75,12 +76,15 @@ class Game:
             if (ip == 'p' or 'i' or 'o'):
                 # spawn a barbarian at the respective spawn point
                 # spawn points are (2, 2), (22, 70), (2, 70)
-                if(ip == 'i'):
-                    self.characters.append(Barbarian((2, 2)))
-                if(ip == 'o'):
-                    self.characters.append(Barbarian((70, 22)))
-                if(ip == 'p'):
-                    self.characters.append(Barbarian((70, 2)))
+                if(len(self.characters ) < self.barb_limit + 1):
+                    if(ip == 'i'):
+                        self.characters.append(Barbarian((2, 2)))
+                    if(ip == 'o'):
+                        self.characters.append(Barbarian((70, 22)))
+                    if(ip == 'p'):
+                        self.characters.append(Barbarian((70, 2)))
+                else:
+                    pass
             if (ip =='r'):
                 Rage(self.characters)
             if (ip == 'h'):

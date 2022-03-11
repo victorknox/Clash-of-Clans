@@ -54,6 +54,11 @@ class Board:
         self.content[1][self.width-12]=':'
         for i in range(math.floor(characters[0].health/100)):
             self.content[1][self.width-11+i]= Fore.CYAN + '■' + Fore.RESET
+
+        # updating the barbarians left
+        self.content[1][self.width-25]='B'
+        self.content[1][self.width-24]=':'
+        self.content[1][self.width-23]= str(21 - len(characters))
         
         # canons attacking enemies
         for building in buildings:

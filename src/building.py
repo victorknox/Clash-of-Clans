@@ -29,7 +29,7 @@ class Building:
             self.update_color(Fore.GREEN)
     
     def destroy(self):
-        self.content = [[' ']*self.length for tile in range(self.height)]
+        self.content = [['']*self.length for tile in range(self.height)]
         self.x = -1
         self.y = -1
 

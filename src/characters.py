@@ -5,8 +5,9 @@ init()
 size = os.get_terminal_size()
 
 class Character:
-    def __init__(self, health, damage, position, ms, icon):
-        self.health = health
+    def __init__(self, maxhealth, damage, position, ms, icon):
+        self.health = maxhealth
+        self.maxhealth = maxhealth
         self.damage = damage
         self.ms = ms
         self.x = position[0]
@@ -48,15 +49,15 @@ class Character:
         self.health -= damage
         if self.health <= 0:
             self.destroy()
-        elif self.health <= 200:
-            self.update_color(Fore.CYAN)
-        elif self.health <= 100:
+        elif self.health <= self.maxhealth/4:
             self.update_color(Fore.WHITE)
+        elif self.health <= self.maxhealth/2:
+            self.update_color(Fore.CYAN)
         else:
             self.update_color(Fore.BLUE)
 
     def destroy(self):
-        self.content = [[' ' + Fore.RESET]*1 for tile in range(1)]
+        self.content = [['' + Fore.RESET]*1 for tile in range(1)]
         self.x = -1
         self.y = -1
 

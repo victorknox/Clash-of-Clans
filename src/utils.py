@@ -31,24 +31,31 @@ class Game:
             self.buildings.append(Wall((65, y)))
         self.characters = [self.king]
         self.board.update(self.buildings, self.characters)
-        
-    def end_game(self):
-        end = True
+
+
+    def check_win(self):
+        win = True
         for character in self.characters:
             if(character.health > 0):
-                end = False
-        if(end):
-            print('DEFEAT!')
+                win = False
+        if(win):
+            print("Defeat!")
             exit()
-        else:
-            for building in self.buildings:
-                if(isinstance(building, Wall) == False):
-                    if(building.health > 0):
-                        end = False
-            if(end):
-                print('VICTORY!')
-                exit()
         
+    def check_loss(self):    
+        loss = True
+        for building in self.buildings:
+            if(building.iswall == False):
+                if(building.health > 0):
+                    loss = False
+        if(loss):
+            print("Victory!")
+            exit()
+
+    def end_game(self):
+        self.check_win()
+        self.check_loss()
+
 
     def run_game(self):
         while(True):
@@ -75,9 +82,9 @@ class Game:
                 if(ip == 'p'):
                     self.characters.append(Barbarian((70, 2)))
             if (ip =='r'):
-                pass
+                Rage(self.characters)
             if (ip == 'h'):
-                pass
+                Heal(self.characters)
             # update the board in each iteration
             self.board.update(self.buildings, self.characters)
 

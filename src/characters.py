@@ -1,4 +1,5 @@
 import os
+import time
 from colorama import Fore, Back, Style, init
 
 init()
@@ -141,4 +142,56 @@ class Barbarian(Character):
             self.unitmove(ip, board)
             ms -= 1
 
-    
+class Wallbreaker(Character):
+    def __init__(self, position):
+        health = 100
+        damage = 1000
+        ms = 2
+        icon = '¤'
+        super().__init__(health, damage, position, ms, icon)
+
+    def bomb_attack(self, buildings):
+        attack_range = 3
+        for building in buildings:
+            for i in range(-attack_range, attack_range):
+                for j in range(-attack_range, attack_range):
+                    if(self.x + i <= building.x + building.length - 1 and self.x + i >= building.x):
+                        if(self.y + j <= building.y + building.height - 1 and self.y + j >= building.y):
+                            building.attacked(self.damage)
+
+    def automove(self, board, buildings):
+        # find closest wall
+        closest = -1
+        for building in buildings:
+            if building.iswall == True:
+                if closest == -1:
+                    closest = building
+                else:
+                    if abs(self.x - building.x) + abs(self.y - building.y) < abs(self.x - closest.x) + abs(self.y - closest.y):
+                        closest = building
+        # move towards closest wall
+        if closest.x > self.x:
+            self.direction = "r"
+            self.move("d", board)
+        elif closest.x < self.x:
+            self.direction = "l"
+            self.move("a", board)
+        elif closest.y > self.y:
+            self.direction = "d"
+            self.move("s", board)
+        elif closest.y < self.y:
+            self.direction = "u"
+            self.move("w", board)
+        else:
+            pass
+        for building in buildings:
+            if building.iswall == True:
+                if abs(self.x - building.x) + abs(self.y - building.y) <= 1:
+                    self.bomb_attack(buildings)
+                    self.destroy()
+
+    def move(self, ip, board):
+        ms = self.ms
+        while(ms > 0):
+            self.unitmove(ip, board)
+            ms -= 1

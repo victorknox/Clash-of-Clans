@@ -29,6 +29,7 @@ class Board:
         self.content[2][2] = Fore.YELLOW + 'I' + Fore.RESET
         self.content[22][70] = Fore.YELLOW + 'O' + Fore.RESET
         self.content[2][70] = Fore.YELLOW + 'P' + Fore.RESET
+        self.content[22][2] = Fore.YELLOW + 'U' + Fore.RESET
 
 
     def display(self):
@@ -55,8 +56,8 @@ class Board:
         for i in range(math.floor(characters[0].health/100)):
             self.content[1][self.width-11+i]= Fore.CYAN + '■' + Fore.RESET
 
-        # updating the barbarians left
-        self.content[1][self.width-25]='B'
+        # updating the troops left
+        self.content[1][self.width-25]='T'
         self.content[1][self.width-24]=':'
         self.content[1][self.width-23]= str(21 - len(characters))
         

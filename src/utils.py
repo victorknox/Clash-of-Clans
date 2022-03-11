@@ -86,6 +86,9 @@ class Game:
             if(ip == ' '):
             # King attacks the building in front of him
                 self.king.attack_enemy(self.buildings)
+            if (ip == 'e'):
+            # King uses the axe attack (bonus)
+                self.king.axe_attack(self.buildings)
             if (ip == 'p' or 'i' or 'o'):
                 # spawn a barbarian at the respective spawn point
                 # spawn points are (2, 2), (22, 70), (2, 70)

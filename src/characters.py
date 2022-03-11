@@ -12,14 +12,9 @@ class Character:
         self.x = position[0]
         self.y = position[1]
         self.icon = icon
+        self.direction = "r"
         self.content = [[Fore.BLUE + icon + Fore.RESET]*1 for tile in range(1)]
 
-
-    def move(self, ip, board):
-        ms = self.ms
-        while(ms > 0):
-            self.unitmove(ip, board)
-            ms -= 1
 
     def unitmove(self, ip, board):
         if ip == 'w' and board.content[self.y-1][self.x] == ' ':
@@ -31,11 +26,24 @@ class Character:
         elif ip == 'd' and board.content[self.y][self.x+1] == ' ':
             self.x += 1
         else:
-            pass
-
-    def attack_enemy(self, enemy):
-        enemy.attacked(self.damage)
+            pass        
     
+    def attack_enemy(self, buildings):
+        for building in buildings:
+            if self.direction == "r":
+                if(self.x + 1 == building.x and self.y <= building.y + building.height - 1 and self.y >= building.y):
+                    building.attacked(self.damage)
+            elif self.direction == "l":
+                if(self.x - 1 == building.x + building.length - 1 and self.y <= building.y + building.height - 1 and self.y >= building.y):
+                    building.attacked(self.damage)
+            elif self.direction == "u":
+                if(self.y - 1 == building.y + building.height - 1 and self.x <= building.x + building.length - 1 and self.x >= building.x):
+                    building.attacked(self.damage)
+            elif self.direction == "d":
+                if(self.y + 1 == building.y and self.x <= building.x + building.length - 1 and self.x >= building.x):
+                    building.attacked(self.damage)
+
+
     def attacked(self, damage):
         self.health -= damage
         if self.health <= 0:
@@ -48,9 +56,10 @@ class Character:
             self.update_color(Fore.BLUE)
 
     def destroy(self):
-        self.content = [[Fore.RED + 'x' + Fore.RESET]*1 for tile in range(1)]
+        self.content = [[' ' + Fore.RESET]*1 for tile in range(1)]
         self.x = -1
         self.y = -1
+
 
     def update_color(self, color):
         self.content = [[color + self.icon + Fore.RESET]*1 for tile in range(1)]
@@ -65,7 +74,22 @@ class King(Character):
         ms = 1
         icon = '┼'
         super().__init__(health, damage, position, ms, icon)
-        
+
+    def move(self, ip, board):
+        # setting the character direction according to the input
+        if ip == 'w':
+            self.direction = "u"
+        elif ip == 's':
+            self.direction = "d"
+        elif ip == 'a':
+            self.direction = "l"
+        elif ip == 'd':
+            self.direction = "r"
+        ms = self.ms
+        while(ms > 0):
+            self.unitmove(ip, board)
+            ms -= 1
+
 
 class Barbarian(Character):
     def __init__(self, position):
@@ -87,13 +111,26 @@ class Barbarian(Character):
                         closest = building
         # move towards closest buiding
         if closest.x > self.x:
-            self.move('d', board)
+            self.direction = "r"
+            self.move("d", board)
         elif closest.x < self.x:
-            self.move('a', board)
+            self.direction = "l"
+            self.move("a", board)
         elif closest.y > self.y:
-            self.move('s', board)
+            self.direction = "d"
+            self.move("s", board)
         elif closest.y < self.y:
-            self.move('w', board)
+            self.direction = "u"
+            self.move("w", board)
         else:
             pass
+        self.attack_enemy(buildings)
+
+    def move(self, ip, board):
+        ms = self.ms
+        while(ms > 0):
+            self.unitmove(ip, board)
+            ms -= 1
+
+        
 

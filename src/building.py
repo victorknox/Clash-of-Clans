@@ -69,7 +69,7 @@ class Cannon(Building):
         length = 2
         maxhealth = 200
         self.attack_range = 6
-        self.damage = 5
+        self.damage = 10
         icon = 'C'
         super().__init__(height, length, position, maxhealth, icon)
 

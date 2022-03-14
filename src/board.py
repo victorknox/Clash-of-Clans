@@ -14,7 +14,7 @@ class Board:
 
     def clear(self):
         
-        # Blank board with boundaries
+        # Initializing a Blank board with boundaries
         self.content = [[' ']*self.width for tile in range(self.height)]
         self.content[0] = ['═']*self.width
         self.content[self.height-1] = ['═']*self.width
@@ -66,6 +66,6 @@ class Board:
             if(isinstance(building, Cannon)):
                 building.attack_enemy(characters)
             
-        # barbarians' automated movement
+        # calling barbarians' automated movement
         for character in characters[1:]:
             character.automove(self, buildings)

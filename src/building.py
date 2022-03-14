@@ -5,6 +5,9 @@ import math
 init(autoreset=True)
 
 class Building:
+    """ The Building parent class which stores basic details such as building size, health, position, etc.
+    It also contains basic methods such as recieving damage, self destruction and updating the color of the building as the health drops. """
+    
     def __init__(self, height, length, position, maxhealth, icon):
         self.health = maxhealth
         self.maxhealth = maxhealth
@@ -18,6 +21,7 @@ class Building:
 
 
     def attacked(self, damage):
+        " receives damage and updates the health accordingly "
         self.health -= damage
         if self.health <= 0:
             self.destroy()
@@ -29,16 +33,21 @@ class Building:
             self.update_color(Fore.GREEN)
     
     def destroy(self):
+        " destroys the building and updates the board accordingly "
         self.content = [['']*self.length for tile in range(self.height)]
         self.x = -1
         self.y = -1
 
     def update_color(self, color):
+        " updates the color of the building "
         for row in range(self.height):
             for col in range(self.length):
                 self.content[row][col] = color + self.icon + Fore.RESET
 
 class TownHall(Building):
+    """ The TownHall class which inherits from the Building class. It is the building which is the main target of the game. """
+    def __init__(self, position, maxhealth):
+        Building.__init__(self, 3, 3, position, maxhealth, 'T')
     def __init__(self, position):
         height = 4
         length = 3
@@ -47,6 +56,7 @@ class TownHall(Building):
         super().__init__(height, length, position, maxhealth, icon)
 
 class Hut(Building):
+    """ The Hut class which inherits from the Building class. It is the building which is the main target of the game. """
     def __init__(self, position):
         height = 1
         length = 1
@@ -55,6 +65,7 @@ class Hut(Building):
         super().__init__(height, length, position, maxhealth, icon)
 
 class Wall(Building):
+    """ The Wall class which inherits from the Building class. It is the building which is the main target of the game. """
     def __init__(self, position):
         height = 1
         length = 1
@@ -64,6 +75,7 @@ class Wall(Building):
         self.iswall = True
     
 class Cannon(Building):
+    """ The Cannon class which inherits from the Building class. It is the building which is the main target of the game. """
     def __init__(self, position):
         height = 2
         length = 2
@@ -74,7 +86,7 @@ class Cannon(Building):
         super().__init__(height, length, position, maxhealth, icon)
 
     def attack_enemy(self, characters):
-        # scan the range, if enemy is in range, attack
+        """ This method is used to attack the enemy. It checks if the enemy is in the attack range and if so, it deals damage to the enemy. """
         x = self.x
         y = self.y
         inrange = False
@@ -84,10 +96,10 @@ class Cannon(Building):
                 inrange = True
                 break
         if not inrange:
-            # change canon color
+            # change canon color to original color
             self.attacked(0)
         else:
-            # change canon color
+            # change canon color to white to indicate attack
             self.update_color(Fore.WHITE)
         return
 

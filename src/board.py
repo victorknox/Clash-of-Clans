@@ -29,8 +29,6 @@ class Board:
         self.content[2][2] = Fore.YELLOW + 'I' + Fore.RESET
         self.content[22][70] = Fore.YELLOW + 'O' + Fore.RESET
         self.content[2][70] = Fore.YELLOW + 'P' + Fore.RESET
-        self.content[22][2] = Fore.YELLOW + 'U' + Fore.RESET
-
 
     def display(self):
         " displays the board "
@@ -50,22 +48,25 @@ class Board:
         for character in characters:
             self.content[character.y][character.x: character.x + 1] = character.content[0]
         
-        # updating king's health bar
-        self.content[1][self.width-13]='K'
+        # updating Hero's health bar
+        self.content[1][self.width-13]='H'
         self.content[1][self.width-12]=':'
         for i in range(math.floor(characters[0].health/100)):
             self.content[1][self.width-11+i]= Fore.CYAN + '■' + Fore.RESET
 
-        # updating the troops left
+        # updating the troops on board
         self.content[1][self.width-25]='T'
         self.content[1][self.width-24]=':'
-        self.content[1][self.width-23]= str(21 - len(characters))
+        self.content[1][self.width-23]= str(len(characters))
         
-        # canons attacking enemies
+        # defensive buildings attacking enemies
         for building in buildings:
             if(isinstance(building, Cannon)):
-                building.attack_enemy(characters)
-            
-        # calling barbarians' automated movement
+                building.attack_enemy(buildings, characters)
+            elif(isinstance(building, WizardTower)):
+                building.attack_enemy(buildings, characters)
+
+        # calling all characters' automated movement
         for character in characters[1:]:
-            character.automove(self, buildings)
+            for i in range(character.ms):
+                character.automove(self, buildings)
